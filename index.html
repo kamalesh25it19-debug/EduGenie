@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>EduGenie - AI Learning Assistant</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: white;
+            width: 90%;
+            max-width: 650px;
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        input {
+            width: 80%;
+            padding: 14px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            font-size: 16px;
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 10px;
+            background: #667eea;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        #answer {
+            margin-top: 25px;
+            padding: 20px;
+            background: #f4f4f4;
+            border-radius: 12px;
+            text-align: left;
+            min-height: 50px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>🎓 EduGenie</h1>
+
+    <p class="subtitle">
+        Google Gemini Powered Learning Assistant
+    </p>
+
+    <input
+        type="text"
+        id="question"
+        placeholder="Ask your study question..."
+    >
+
+    <br>
+
+    <button onclick="askGemini()">
+        Ask EduGenie 🤖
+    </button>
+
+    <div id="answer">
+        Your answer will appear here...
+    </div>
+
+</div>
+
+<script>
+
+async function askGemini() {
+
+    const question = document.getElementById("question").value;
+    const answer = document.getElementById("answer");
+
+    if (!question) {
+        answer.innerText = "Please enter a question.";
+        return;
+    }
+
+    answer.innerText = "Thinking... 🤔";
+
+    try {
+
+        const response = await fetch("/ask", {
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                question: question
+            })
+        });
+
+        const data = await response.json();
+
+        answer.innerText = data.answer;
+
+    } catch (error) {
+
+        answer.innerText = "Something went wrong. Please try again.";
+
+    }
+}
+
+</script>
+
+</body>
+</html>
